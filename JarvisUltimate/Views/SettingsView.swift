@@ -34,7 +34,7 @@ struct GeneralTab: View {
                 .font(.title2)
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity)
-                .padding(.top, 13)
+                .padding(.top, 0)
                 .padding(.bottom, 8)
             
             // Transcription Model Section

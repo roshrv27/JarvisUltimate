@@ -48,8 +48,12 @@ final class HotkeyService {
     }
 
     func resetAccessibilityDatabase() {
-        // Opening System Settings to let user re-grant permission
-        NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!)
+        // Reset TCC database for this app - forces permission prompt on next access
+        let bundleID = Bundle.main.bundleIdentifier ?? "com.jarvisultimate.app"
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "/usr/bin/tccutil")
+        process.arguments = ["reset", "Accessibility", bundleID]
+        try? process.run()
     }
 
     private func registerMonitors() {

@@ -244,10 +244,8 @@ final class TranscriptionViewModel {
                 // 3. Language detection
                 let detectedLang = langDetect.detect(text: rawText, whisperHint: lang)
 
-                // 4. Grammar correction
-                let grammarStart = Date()
-                let grammarFixed = grammar.correct(text: rawText, language: detectedLang.code)
-                NSLog("[TranscriptionViewModel] Step 4 (Grammar) took \(String(format: "%.2f", Date().timeIntervalSince(grammarStart)))s")
+                // 4. Grammar correction - skipped for speed
+                let grammarFixed = rawText
 
                 // 5. Apply correction memory
                 let finalText = corrections.applyCorrections(to: grammarFixed)
@@ -278,7 +276,7 @@ final class TranscriptionViewModel {
 
                 // 8. Confirmation
                 appState.recordingState = .showingConfirmation(text: finalText)
-                try? await Task.sleep(for: .seconds(1.5))
+                try? await Task.sleep(for: .seconds(0.5))
                 appState.recordingState = .idle
 
             } catch {

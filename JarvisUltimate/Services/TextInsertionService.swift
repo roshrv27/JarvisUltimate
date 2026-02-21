@@ -32,7 +32,7 @@ final class TextInsertionService {
         
         // Wait for modifier keys to be released
         var retry = 0
-        while retry < 10 {
+        while retry < 5 {
             let mods = NSEvent.modifierFlags.intersection(.deviceIndependentFlagsMask)
             if mods.isEmpty { break }
             usleep(50000)
@@ -40,7 +40,7 @@ final class TextInsertionService {
         }
         
         // Small delay to ensure target app has focus
-        usleep(100000) // 100ms
+        usleep(50000) // 50ms
         
         // Try accessibility API
         log("Trying accessibility API...")
