@@ -1,0 +1,12 @@
+.DS_Store
+build.log
+build_err.log
+debug.log
+run.log
+run_v2.log
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+DerivedData/
+Pods/
+.swiftpm/
+*.xcuserstate
