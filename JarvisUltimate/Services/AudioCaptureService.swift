@@ -2,13 +2,11 @@ import AVFoundation
 
 final class AudioCaptureService {
     var onAmplitude: ((Float) -> Void)?
-    var onSilenceDetected: (() -> Void)?
     var onMaxDurationReached: (() -> Void)?
 
     private var engine: AVAudioEngine?
     private var audioFile: AVAudioFile?
     private var tempFileURL: URL?
-    private var silenceAccumulator: TimeInterval = 0
     private var maxDurationTimer: Timer?
     private let settings = AppSettings.shared
 
@@ -79,8 +77,6 @@ final class AudioCaptureService {
         guard let converter = AVAudioConverter(from: inputFormat, to: whisperFormat) else {
             throw AudioError.converterFailed
         }
-
-        silenceAccumulator = 0
 
         // Install tap on input node (native device format)
         inputNode.installTap(onBus: 0, bufferSize: 1024, format: inputFormat) {

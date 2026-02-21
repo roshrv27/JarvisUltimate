@@ -14,14 +14,6 @@ final class AppSettings {
         didSet { defaults.set(maxRecordingSeconds, forKey: "maxRecordingSeconds") }
     }
 
-    var silenceTimeoutSeconds: Double {
-        didSet { defaults.set(silenceTimeoutSeconds, forKey: "silenceTimeoutSeconds") }
-    }
-
-    var silenceThresholdDb: Double {
-        didSet { defaults.set(silenceThresholdDb, forKey: "silenceThresholdDb") }
-    }
-
 
     var recordHotkeyCode: UInt16 {
         didSet { defaults.set(Int(recordHotkeyCode), forKey: "recordHotkeyCode") }
@@ -42,8 +34,6 @@ final class AppSettings {
     init() {
         self.selectedModel = defaults.string(forKey: "selectedModel") ?? "openai_whisper-large-v3-v20240930_turbo_632MB"
         self.maxRecordingSeconds = defaults.object(forKey: "maxRecordingSeconds") as? Int ?? 120
-        self.silenceTimeoutSeconds = defaults.object(forKey: "silenceTimeoutSeconds") as? Double ?? 3.0
-        self.silenceThresholdDb = defaults.object(forKey: "silenceThresholdDb") as? Double ?? -40.0
         
         let recordKey = defaults.integer(forKey: "recordHotkeyCode")
         self.recordHotkeyCode = UInt16(recordKey == 0 ? 49 : recordKey)

@@ -10,7 +10,6 @@ final class TranscriptionViewModel {
     private let hotkey = HotkeyService()
     private let audio = AudioCaptureService()
     private let whisper = WhisperTranscriptionService()
-    private let cloud = CloudTranscriptionService()
     private let langDetect = LanguageDetectionService()
     private let grammar = GrammarCorrectionService()
     private let corrections = CorrectionMemoryService()
@@ -336,7 +335,6 @@ final class TranscriptionViewModel {
 
     // For settings view
     var correctionService: CorrectionMemoryService { corrections }
-    var cloudService: CloudTranscriptionService { cloud }
 
     func switchModel(to modelId: String) async {
         appState.recordingState = .downloadingModel(progress: 0)

@@ -14,6 +14,10 @@ final class HotkeyService {
     private var isPTTActive = false
     private var lastOptionTime: TimeInterval = 0
 
+    private let rightOptionKeyCode: UInt16 = 0x40
+    private let correctionKeyCode: UInt16 = 8  // C key
+    private let correctionModifiers: UInt = 0x180100  // Cmd + Shift
+
     func start() {
         requestAccessibilityIfNeeded()
         registerMonitors()
@@ -44,11 +48,8 @@ final class HotkeyService {
     }
 
     func resetAccessibilityDatabase() {
-        let bundleID = Bundle.main.bundleIdentifier ?? "com.jarvisultimate.app"
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/usr/bin/tccutil")
-        process.arguments = ["reset", "Accessibility", bundleID]
-        try? process.run()
+        // Opening System Settings to let user re-grant permission
+        NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!)
     }
 
     private func registerMonitors() {
@@ -69,7 +70,7 @@ final class HotkeyService {
     }
 
     private func handleFlagsChanged(_ event: NSEvent) {
-        let isRightOption = (event.modifierFlags.rawValue & 0x40) != 0
+        let isRightOption = (event.modifierFlags.rawValue & UInt(rightOptionKeyCode)) != 0
         let isOptionPressed = event.modifierFlags.contains(.option)
         
         if isRightOption && isOptionPressed {
@@ -95,8 +96,8 @@ final class HotkeyService {
     private func handleKeyDown(_ event: NSEvent) {
         let mods = event.modifierFlags.intersection(.deviceIndependentFlagsMask).rawValue
         
-        // Correction: Cmd+Shift+C (keyCode 8 = C)
-        if event.keyCode == 8 && mods == 0x180100 {
+        // Correction: Cmd+Shift+C
+        if event.keyCode == correctionKeyCode && mods == correctionModifiers {
             NSLog("[HotkeyService] Correction trigger")
             onCorrectionTrigger?()
         }
